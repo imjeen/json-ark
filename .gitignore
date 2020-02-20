@@ -1,0 +1,13 @@
+!.gitkeep
+
+.DS_Store
+
+.idea
+node_modules
+npm-debug.log
+
+/origin
+/dist
+
+/temp
+/www
