@@ -7,27 +7,10 @@ const CONFIG = {
     target_dir: './dist'
 };
 
-const RESULT_DATA = [
-    /*{
-        "subcat": 1012,
-        "api": "/v1/AICartoonStyle3",
-        "material": [
-            {
-                "id": 1,
-                 
-                "cartoonType": 3,
-                "type": 1,
-                "filterType": 3000,
-                "backgroundType": -1,
-                "makeupType": 12,
-                "use3X": 0
-            },
-        ]
-    }*/
-];
+const RESULT_DATA = [];
 
-new Promise((resolve, reject)=>{
-    
+(async _=>{
+
     // ---------------------------------
     // read
 
@@ -36,58 +19,54 @@ new Promise((resolve, reject)=>{
     });
 
     let index = 0;
-    rl.on('line', (line) => {
+    for await (let line of rl) {
         ++index;
-        // 删除回车/换行/制表符~
-        line = line.replace(/\n|\r|\t/g, "").trim();
-        // 为空
-        if(!line) return;
+        (_=>{
+            ++index;
+            // 删除回车/换行/制表符~
+            line = line.replace(/\n|\r|\t/g, "").trim();
+            // 为空
+            if(!line) return;
 
-        const list = line.split(' ').filter(v=> v.trim() !== '');
+            const list = line.split(' ').filter(v=> v.trim() !== '');
 
-        if(index === 1) return;
+            if(index === 1) return;
 
-        console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
+            // console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
 
-        if(list.length === 10){
-            RESULT_DATA.push({
-                subcat:list[0],
-                api: list[3],
-                name: list[2],
-                material: [],
-            });
-            // console.table(list)
-        }else{
-           let last_item = RESULT_DATA[RESULT_DATA.length - 1];
-           console.log('last_item', last_item);
-           last_item && last_item.material.push({
-                "id": list[0],
-                "cartoonType": list[3],
-                "type": list[4],
-                "filterType": list[5],
-                "backgroundType": list[6],
-                "makeupType": list[7],
-                "use3X": list[8],
-           });
-            
-        }
+            if(list.length === 10){
+                RESULT_DATA.push({
+                    subcat:list[0],
+                    api: list[3],
+                    name: list[2],
+                    material: [],
+                });
+                // console.table(list)
+            }else{
+               let last_item = RESULT_DATA[RESULT_DATA.length - 1];
+               // console.log('last_item', last_item);
+               last_item && last_item.material.push({
+                    "id": list[0],
+                    "cartoonType": list[3],
+                    "type": list[4],
+                    "filterType": list[5],
+                    "backgroundType": list[6],
+                    "makeupType": list[7],
+                    "use3X": list[8],
+               });
+                
+            }
 
-        
 
-    });
+        })();
 
-    rl.on('close', () => {
-      console.log('Readline close.');
-      // console.table(RESULT_DATA)
-      // console.log('\ result data => ', JSON.stringify(RESULT_DATA, null, 2));
-      resolve();
-    });
+    }
 
-}).then(_=>{
 
     // ---------------------------------
     // write
-     const target_dir = CONFIG.target_dir;
+
+    const target_dir = CONFIG.target_dir;
 
     !fs.existsSync(target_dir) && fs.mkdirSync(target_dir);
 
@@ -110,6 +89,5 @@ new Promise((resolve, reject)=>{
 
     console.log('outputed');
 
-
-});
+})();
 
