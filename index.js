@@ -47,7 +47,7 @@ new Promise((resolve, reject)=>{
 
         if(index === 1) return;
 
-        console.log('\n 👆length: %s,第%s行=>: %s\n', list.length, index, line);
+        console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
 
         if(list.length === 10){
             RESULT_DATA.push({
@@ -93,7 +93,16 @@ new Promise((resolve, reject)=>{
 
     const data = new Uint8Array(Buffer.from(JSON.stringify(RESULT_DATA, null, 2)));
 
-    fs.writeFileSync(path.join(target_dir, 'data.json'), data, {
+    const date = new Date(),
+           name = `${
+                (date.getFullYear()).toString() 
+            }_${ 
+                (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0') 
+            }_${
+                date.getHours().toString().padStart(2, '0') + date.getMinutes().toString().padStart(2, '0') + date.getSeconds().toString().padStart(2, '0')  
+            }`;
+
+    fs.writeFileSync(path.join(target_dir, `data_${ name }.json`), data, {
         encoding: 'utf8',
         cwd: __dirname,
         stdio: [process.stdin, process.stdout, process.stderr]
