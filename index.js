@@ -57,7 +57,7 @@ const RESULT_DATA = [];
         // 为空 或 第一行
         if(line === '' || index === 1) continue;
 
-        const list = line.split(/\t\s/).filter(v=> v.trim() !== '');
+        const list = line.split(/\t|\s/).filter(v=> v.trim() !== '');
 
         // console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
 

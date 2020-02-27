@@ -342,11 +342,12 @@
       },
       {
         "id": "26",
-        "cartoonType": "1",
-        "type": "11009",
-        "filterType": "1009",
-        "backgroundType": "26",
-        "makeupType": "0"
+        "cartoonType": "11",
+        "type": "1",
+        "filterType": "11009",
+        "backgroundType": "1009",
+        "makeupType": "26",
+        "use3X": "0"
       },
       {
         "id": "27",
