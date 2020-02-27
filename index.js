@@ -52,12 +52,12 @@ const RESULT_DATA = [];
         ++index;
        
         // 删除回车/换行/制表符~
-        const line = item.replace(/\n|\r|\t/g, "").trim();
+        const line = item.replace(/^(\n|\r|\t)|(\n|\r|\t)$/g, "").trim();
         
         // 为空 或 第一行
         if(line === '' || index === 1) continue;
 
-        const list = line.split(' ').filter(v=> v.trim() !== '');
+        const list = line.split(/\t\s/).filter(v=> v.trim() !== '');
 
         // console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
 

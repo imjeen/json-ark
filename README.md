@@ -7,13 +7,13 @@ execute command: `node index`
 `docker run --rm -it  -w /root/src -v $PWD:/root/src  node:12.13.1-alpine sh`
 
 
-## 数据模型
+## Data Pattern
 
 ```js
 [
     {
         "subcat": 1012,
-        "api": "/v1/AICartoonStyle3",
+        "api": "/v1/AI",
         "material": [
             {
                 "id": 1,
