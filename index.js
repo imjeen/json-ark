@@ -8,7 +8,7 @@ const CONFIG = {
 };
 
 
-Date.prototype.Format = function(formatter) {
+Date.prototype.Format = function (formatter) {
     // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") => 2020-02-21 16:12:59.155
     const config = {
         'M+': this.getMonth() + 1, // 月份: 1到2位
@@ -35,7 +35,7 @@ Date.prototype.Format = function(formatter) {
 
 const RESULT_DATA = [];
 
-(async _=>{
+(async _ => {
     console.log('\nstart...');
 
     // ---------------------------------
@@ -50,29 +50,31 @@ const RESULT_DATA = [];
     // nodejs version must be greater than or equal to 11
     for await (const item of rl) {
         ++index;
-       
+
         // 删除回车/换行/制表符~
         const line = item.replace(/^(\n|\r|\t)|(\n|\r|\t)$/g, "").trim();
-        
-        // 为空 或 第一行
-        if(line === '' || index === 1) continue;
 
-        const list = line.split(/\t|\s/).filter(v=> v.trim() !== '');
+        // 为空 或 第一行
+        if (line === '' || index === 1) continue;
+
+        const list = line.split(/\t|\s/).filter(v => v.trim() !== '');
 
         // console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
 
-        if(list.length === 10){
+        if (list.length === 10 && list[3] !== '-') {
             RESULT_DATA.push({
-                subcat:list[0],
+                subcat: list[0],
                 api: list[3],
                 name: list[2],
                 material: [],
             });
             // console.table(list)
-        }else{
-           let last_item = RESULT_DATA[RESULT_DATA.length - 1];
-           // console.log('last_item', last_item);
-           last_item && last_item.material.push({
+        } else if (list.length === 9 || (list.length === 10 && list[3] === '-')) {
+            (list.length === 10 && list[3] === '-') && list.shift();
+
+            let last_item = RESULT_DATA[RESULT_DATA.length - 1];
+            // console.log('last_item', last_item);
+            last_item && last_item.material.push({
                 "id": list[0],
                 "cartoonType": list[3],
                 "type": list[4],
@@ -80,8 +82,8 @@ const RESULT_DATA = [];
                 "backgroundType": list[6],
                 "makeupType": list[7],
                 "use3X": list[8],
-           });
-            
+            });
+
         }
 
     }
@@ -91,22 +93,22 @@ const RESULT_DATA = [];
     // write
 
     // 清除旧文件：读取目录
-   
+
 
     const target_dir = CONFIG.target_dir;
 
-    if(!fs.existsSync(target_dir) ){
+    if (!fs.existsSync(target_dir)) {
         fs.mkdirSync(target_dir);
-    }else{
-        let target_list = fs.readdirSync(target_dir).sort((a, b)=> a < b); // 创建从早到晚的数值
+    } else {
+        let target_list = fs.readdirSync(target_dir).sort((a, b) => a < b); // 创建从早到晚的数值
 
         // console.log(target_list);
 
         const file_count = 5;
 
         target_list
-            .filter((v, i) => (i + 1) < (target_list.length - file_count) )
-            .forEach(name=> fs.unlinkSync(path.join(target_dir, name)))
+            .filter((v, i) => (i + 1) < (target_list.length - file_count))
+            .forEach(name => fs.unlinkSync(path.join(target_dir, name)))
     }
 
 
@@ -114,17 +116,17 @@ const RESULT_DATA = [];
 
     const name = new Date().Format('yyyyMMdd_hhmmsss');
 
-    fs.writeFileSync(path.join(target_dir, `data_${ name }.json`), data, {
+    fs.writeFileSync(path.join(target_dir, `data_${name}.json`), data, {
         encoding: 'utf8',
         cwd: __dirname,
         stdio: [process.stdin, process.stdout, process.stderr]
     });
 
-    const target_path =  path.join(target_dir, `data_${ name }.json`)
+    const target_path = path.join(target_dir, `data_${name}.json`)
 
     const stats = fs.statSync(target_path);
-    const size = `${ Math.round(stats.size / 1024) } kb`
-    
+    const size = `${Math.round(stats.size / 1024)} kb`
+
     console.table([
         { size, path: target_path }
     ]);
