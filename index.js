@@ -1,37 +1,12 @@
 const readline = require('readline');
 const path = require('path');
 const fs = require('fs');
+const utils = require('./utils/date');
 
 const CONFIG = {
     origin_file: './origin/data.txt',
     target_dir: './dist'
 };
-
-
-Date.prototype.Format = function (formatter) {
-    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") => 2020-02-21 16:12:59.155
-    const config = {
-        'M+': this.getMonth() + 1, // 月份: 1到2位
-        'd+': this.getDate(), // 日: 1到2位
-        'h+': this.getHours(), // 小时: 1到2位
-        'm+': this.getMinutes(), // 分: 1到2位
-        's+': this.getSeconds(), // 秒: 1到2位
-        'q+': Math.floor((this.getMonth() + 3) / 3), // 季度: 1位
-        S: this.getMilliseconds(), // 毫秒: 1到3位 （只能用一个字符S表示）
-    };
-    // 年: 1到4位
-    if (/(y+)/.test(formatter)) {
-        formatter = formatter.replace(RegExp.$1, String(this.getFullYear()).substr(4 - RegExp.$1.length));
-    }
-    for (let key in config) {
-        if (new RegExp(`(${key})`).test(formatter)) {
-            let value = RegExp.$1.length == 1 ? config[key] : ('00' + config[key]).substr(String(config[key]).length);
-            formatter = formatter.replace(RegExp.$1, value);
-        }
-    }
-    return formatter;
-};
-
 
 const RESULT_DATA = [];
 
@@ -114,7 +89,7 @@ const RESULT_DATA = [];
 
     const data = new Uint8Array(Buffer.from(JSON.stringify(RESULT_DATA, null, 2)));
 
-    const name = new Date().Format('yyyyMMdd_hhmmsss');
+    const name = new utils.UtilDate().format('yyyyMMdd_hhmmsss');
 
     fs.writeFileSync(path.join(target_dir, `data_${name}.json`), data, {
         encoding: 'utf8',
