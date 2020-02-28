@@ -1,4 +1,4 @@
-class UtilDate extends Date {
+export default class UtilDate extends Date {
     format(formatter) {
         // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") => 2020-02-21 16:12:59.155
         const config = {
@@ -23,5 +23,3 @@ class UtilDate extends Date {
         return formatter;
     }
 }
-
-exports.UtilDate = UtilDate;

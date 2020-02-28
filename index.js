@@ -1,7 +1,8 @@
-const readline = require('readline');
-const path = require('path');
-const fs = require('fs');
-const utils = require('./utils/date');
+import path from 'path';
+import fs from 'fs';
+import UtilDate from './utils/date.js';
+import { __dirname } from './es.js'
+
 
 const CONFIG = {
     origin_file: './origin/data.txt',
@@ -89,7 +90,7 @@ const RESULT_DATA = [];
 
     const data = new Uint8Array(Buffer.from(JSON.stringify(RESULT_DATA, null, 2)));
 
-    const name = new utils.UtilDate().format('yyyyMMdd_hhmmsss');
+    const name = new UtilDate().format('yyyyMMdd_hhmmsss');
 
     fs.writeFileSync(path.join(target_dir, `data_${name}.json`), data, {
         encoding: 'utf8',
