@@ -1,8 +1,12 @@
-import path from 'path';
+import UtilDate from './utils/date.js';
+
 import fs from 'fs';
 import readline from 'readline';
-import UtilDate from './utils/date.js';
-import { __dirname } from './es.js';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 class Ship {
@@ -56,7 +60,7 @@ class Ship {
 
             const list = line.split(/\t|\s/).filter(v => v.trim() !== '');
 
-            // console.log('\n 👇length: %s,第%s行=>: %s\n', list.length, index, line);
+            // console.log('\n 👇length: %s,# %s =>: %s\n', list.length, index, line);
 
             if (list.length === 10 && list[3] !== '-') {
                 DATA_LIST.push({
